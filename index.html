@@ -66,10 +66,19 @@
         <div class="home-content">
             <h1>Hi, I'm <span>Steeve Nazareth</span></h1>
             <div class="text-animate">
-                <h3>Software Developer</h3>
+                <!--
+                  The headline below is wired up to a small typing library (see scripts at
+                  the bottom of this file).  It will cycle through a list of job titles
+                  (e.g. Software Developer, Flutter Developer, AI Enthusiast) to give
+                  visitors a more engaging introduction.  If JavaScript is disabled the
+                  fallback text inside the <noscript> tag is displayed instead.
+                -->
+                <h3 class="typed-wrap">
+                  <span id="typed-job"></span>
+                  <noscript>Software Developer</noscript>
+                </h3>
                 <p> I am a passionate software developer with a Master's in Applied Computing. I thrive on challenges and believe in the limitless possibilities of technology. With a strong foundation and experience in various programming languages and technologies, I am dedicated to bringing innovative ideas to life. If you can dream it, I can build it. Let's create something amazing together.
                 </p>
-
 
                 <div class="btn-box">
                     <a href="https://www.linkedin.com/in/steeve-nazareth/" class="btn">Hire Me</a>
@@ -430,6 +439,36 @@
           }
 
     </script>
+
+<!-- ScrollReveal adds smooth scroll‑triggered animations to elements on the page.
+     It’s loaded from a CDN and configured below to reveal various sections as
+     the user scrolls. See https://scrollrevealjs.org/ for documentation. -->
+<script src="https://unpkg.com/scrollreveal"></script>
+<script>
+  // Configure ScrollReveal with some sane defaults.  We disable reset so
+  // elements animate only once when they enter the viewport.
+  const sr = ScrollReveal({
+    reset: false,
+    distance: '60px',
+    duration: 1200,
+    delay: 200
+  });
+  // Reveal the hero content and social links from the left and bottom.
+  sr.reveal('.home-content', { origin: 'left' });
+  sr.reveal('.home-sci', { origin: 'bottom', delay: 400 });
+  // About section: image from left, content from right
+  sr.reveal('.about-img', { origin: 'left' });
+  sr.reveal('.about-content', { origin: 'right' });
+  // Education & experience columns slide up
+  sr.reveal('.education-column', { origin: 'bottom', interval: 200 });
+  // Skills section reveals columns sequentially
+  sr.reveal('.skills-column', { origin: 'bottom', interval: 200 });
+  // Extra courses slider and projects section
+  sr.reveal('.extra-courses', { origin: 'bottom' });
+  sr.reveal('#projects', { origin: 'bottom' });
+  // Contact form appears from the bottom
+  sr.reveal('.contact', { origin: 'bottom' });
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script>
@@ -604,6 +643,53 @@ prevBtn.addEventListener("click", prevSlide);
 
 // Auto-change every 7 seconds
 setInterval(nextSlide, 7000);
+</script>
+
+<!-- Typed.js gives the headline a dynamic, looping typing effect.  The
+     library is loaded from a CDN and initialised once the page has
+     rendered.  See https://github.com/mattboldt/typed.js for more details. -->
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialise a Typed instance on the element with ID typed-job.  It will loop
+    // through multiple phrases to highlight different areas of expertise.
+    new Typed('#typed-job', {
+      strings: [
+        'Software Developer',
+        'Flutter Developer',
+        'AI Enthusiast'
+      ],
+      typeSpeed: 70,
+      backSpeed: 40,
+      backDelay: 2000,
+      startDelay: 500,
+      loop: true
+    });
+
+    // Animate the progress bars once they scroll into view.  Each bar has a
+    // data-percent attribute that specifies its target width.  We start
+    // everything at 0% and then transition to the final width when at least
+    // half of the bar is visible in the viewport.
+    const skillBars = document.querySelectorAll('.skill-box .bar span');
+    skillBars.forEach(bar => {
+      bar.style.width = '0%';
+    });
+    const barObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bar = entry.target;
+          const pct = bar.getAttribute('data-percent');
+          // Only animate once
+          if (!bar.classList.contains('animated')) {
+            bar.classList.add('animated');
+            bar.style.transition = 'width 1.8s ease-out';
+            bar.style.width = pct + '%';
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+    skillBars.forEach(bar => barObserver.observe(bar));
+  });
 </script>
 
 </body>

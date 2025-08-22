@@ -13,6 +13,9 @@
 
 :root {
     --bg-color: #081b29;
+    /* When creating semi‑transparent backgrounds it is helpful to keep
+       a separate RGB representation of the primary background colour. */
+    --bg-color-rgb: 8, 27, 41;
     --second-color: #112e42;
     --text-color: #ededed;
     --main-color: #00abf0;
@@ -35,7 +38,11 @@ body {
     left: 0;
     width: 100%;
     padding: 2rem 9%;
-    background-color: transparent;
+    /* Make the header slightly translucent and blurred to achieve a modern
+       frosted glass effect.  The RGB values come from the --bg-color-rgb
+       variable defined in the :root. */
+    background-color: rgba(var(--bg-color-rgb), 0.4);
+    backdrop-filter: blur(6px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,7 +50,11 @@ body {
 }
 
 .header.sticky{
-    background: var(--bg-color);
+    /* When the header is stuck to the top of the viewport we increase
+       the opacity and blur for better readability against the page
+       content while still letting some of the background peek through. */
+    background: rgba(var(--bg-color-rgb), 0.8);
+    backdrop-filter: blur(10px);
 }
 
 .logo {
@@ -90,6 +101,10 @@ section {
     background: linear-gradient(to right, var(--bg-color), var(--bg-color) 15%, transparent), url('https://res.cloudinary.com/ddikqagvq/image/upload/v1687723611/profile_ktyrf4.jpg') no-repeat;
     background-size: cover;
     background-position: right;
+    /* Create a subtle parallax effect by keeping the background fixed as the user
+       scrolls.  This gives the hero section a more dynamic feel without the
+       overhead of additional JavaScript. */
+    background-attachment: fixed;
 }
 
 .home::before {
